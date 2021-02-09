@@ -8,12 +8,12 @@ import IHashProvider from "../providers/HashProvider/models/IHashProvider";
 
 import User from "../infra/typeorm/entities/User";
 
-interface Request {
+interface IRequest {
   email: string;
   password: string;
 }
 
-interface Response {
+interface IResponse {
   user: User;
   token: string;
 }
@@ -28,7 +28,7 @@ class AuthenticateUserService {
     private hashProvider: IHashProvider
   ) {}
 
-  public async execute({ email, password }: Request): Promise<Response> {
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
