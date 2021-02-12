@@ -4,13 +4,13 @@ import uploadConfig from "@config/upload";
 
 import ensureAuthenticated from "../middlewares/ensureAuthenticated";
 
-import UsersControllers from "../controllers/UsersController";
+import UsersController from "../controllers/UsersController";
 import UserAvatarController from "../controllers/UserAvatarController";
 
 const usersRouter = Router();
 const upload = multer(uploadConfig);
 
-const usersControllers = new UsersControllers();
+const usersControllers = new UsersController();
 const userAvatarController = new UserAvatarController();
 
 usersRouter.post("/", usersControllers.create);

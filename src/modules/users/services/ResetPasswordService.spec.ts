@@ -81,8 +81,8 @@ describe("ResetPasswordService", () => {
 
     await expect(
       resetPassword.execute({
+        password: "123456",
         token,
-        password: "123123",
       })
     ).rejects.toBeInstanceOf(AppError);
   });
