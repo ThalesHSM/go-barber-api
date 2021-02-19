@@ -47,16 +47,18 @@ var AppointmentController = /** @class */ (function () {
     }
     AppointmentController.prototype.create = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, provider_id, date, parsedDate, createAppointment, appointment;
+            var user_id, _a, provider_id, date, parsedDate, createAppointment, appointment;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        user_id = request.user.id;
                         _a = request.body, provider_id = _a.provider_id, date = _a.date;
                         parsedDate = date_fns_1.parseISO(date);
                         createAppointment = tsyringe_1.container.resolve(CreateAppointmentServices_1.default);
                         return [4 /*yield*/, createAppointment.execute({
                                 date: parsedDate,
                                 provider_id: provider_id,
+                                user_id: user_id,
                             })];
                     case 1:
                         appointment = _b.sent();

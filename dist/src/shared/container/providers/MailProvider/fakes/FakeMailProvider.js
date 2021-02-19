@@ -40,13 +40,10 @@ var FakeMailProvider = /** @class */ (function () {
     function FakeMailProvider() {
         this.messages = [];
     }
-    FakeMailProvider.prototype.sendMail = function (to, body) {
+    FakeMailProvider.prototype.sendMail = function (message) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.messages.push({
-                    to: to,
-                    body: body,
-                });
+                this.messages.push(message);
                 return [2 /*return*/];
             });
         });

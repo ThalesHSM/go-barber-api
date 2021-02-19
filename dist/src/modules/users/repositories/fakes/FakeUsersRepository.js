@@ -63,6 +63,19 @@ var FakeUsersRepository = /** @class */ (function () {
             });
         });
     };
+    FakeUsersRepository.prototype.findAllProviders = function (_a) {
+        var except_user_id = _a.except_user_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var users;
+            return __generator(this, function (_b) {
+                users = this.users;
+                if (except_user_id) {
+                    users = this.users.filter(function (user) { return user.id !== except_user_id; });
+                }
+                return [2 /*return*/, users];
+            });
+        });
+    };
     FakeUsersRepository.prototype.create = function (userData) {
         return __awaiter(this, void 0, void 0, function () {
             var user;

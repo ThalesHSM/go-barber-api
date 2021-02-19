@@ -55,17 +55,27 @@ var date_fns_1 = require("date-fns");
 var tsyringe_1 = require("tsyringe");
 var AppError_1 = __importDefault(require("@shared/errors/AppError"));
 var CreateAppointmentService = /** @class */ (function () {
-    function CreateAppointmentService(appointmentsRepository) {
+    function CreateAppointmentService(appointmentsRepository, notificationsRepository) {
         this.appointmentsRepository = appointmentsRepository;
+        this.notificationsRepository = notificationsRepository;
     }
     CreateAppointmentService.prototype.execute = function (_a) {
-        var date = _a.date, provider_id = _a.provider_id;
+        var date = _a.date, provider_id = _a.provider_id, user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var appointmentDate, findAppointmentInSameDate, appointment;
+            var appointmentDate, findAppointmentInSameDate, appointment, dateFormatted;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         appointmentDate = date_fns_1.startOfHour(date);
+                        if (date_fns_1.isBefore(appointmentDate, Date.now())) {
+                            throw new AppError_1.default("You can't create an appointment on a past date.");
+                        }
+                        if (user_id === provider_id) {
+                            throw new AppError_1.default("You can't create an appointment with yourself");
+                        }
+                        if (date_fns_1.getHours(appointmentDate) < 8 || date_fns_1.getHours(appointmentDate) > 17) {
+                            throw new AppError_1.default("You can only create appointments between 8am and 5pm.");
+                        }
                         return [4 /*yield*/, this.appointmentsRepository.findByDate(appointmentDate)];
                     case 1:
                         findAppointmentInSameDate = _b.sent();
@@ -74,10 +84,18 @@ var CreateAppointmentService = /** @class */ (function () {
                         }
                         return [4 /*yield*/, this.appointmentsRepository.create({
                                 provider_id: provider_id,
+                                user_id: user_id,
                                 date: appointmentDate,
                             })];
                     case 2:
                         appointment = _b.sent();
+                        dateFormatted = date_fns_1.format(appointmentDate, "dd/MM/yyyy 'às' HH/mm'h'");
+                        return [4 /*yield*/, this.notificationsRepository.create({
+                                recipient_id: provider_id,
+                                content: "Novo agendamento para dia " + dateFormatted + " ",
+                            })];
+                    case 3:
+                        _b.sent();
                         return [2 /*return*/, appointment];
                 }
             });
@@ -86,7 +104,8 @@ var CreateAppointmentService = /** @class */ (function () {
     CreateAppointmentService = __decorate([
         tsyringe_1.injectable(),
         __param(0, tsyringe_1.inject("AppointmentsRepository")),
-        __metadata("design:paramtypes", [Object])
+        __param(1, tsyringe_1.inject("NotificationsRepository")),
+        __metadata("design:paramtypes", [Object, Object])
     ], CreateAppointmentService);
     return CreateAppointmentService;
 }());

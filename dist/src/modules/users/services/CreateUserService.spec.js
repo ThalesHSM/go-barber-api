@@ -43,20 +43,24 @@ var AppError_1 = __importDefault(require("@shared/errors/AppError"));
 var FakeUsersRepository_1 = __importDefault(require("../repositories/fakes/FakeUsersRepository"));
 var fakeHashProvider_1 = __importDefault(require("../providers/HashProvider/fakes/fakeHashProvider"));
 var CreateUserService_1 = __importDefault(require("./CreateUserService"));
+var fakeUsersRepository;
+var fakeHashProvider;
+var createUser;
 describe("CreateUser", function () {
+    beforeEach(function () {
+        fakeUsersRepository = new FakeUsersRepository_1.default();
+        fakeHashProvider = new fakeHashProvider_1.default();
+        createUser = new CreateUserService_1.default(fakeUsersRepository, fakeHashProvider);
+    });
     it("Should be able to create a new user", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var fakeUsersRepository, fakeHashProvider, createUser, user;
+        var user;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    fakeUsersRepository = new FakeUsersRepository_1.default();
-                    fakeHashProvider = new fakeHashProvider_1.default();
-                    createUser = new CreateUserService_1.default(fakeUsersRepository, fakeHashProvider);
-                    return [4 /*yield*/, createUser.execute({
-                            name: "John Doe",
-                            email: "abc@abc.com",
-                            password: "123123",
-                        })];
+                case 0: return [4 /*yield*/, createUser.execute({
+                        name: "John Doe",
+                        email: "abc@abc.com",
+                        password: "123123",
+                    })];
                 case 1:
                     user = _a.sent();
                     expect(user).toHaveProperty("id");
@@ -65,18 +69,13 @@ describe("CreateUser", function () {
         });
     }); });
     it("Should not be able to create a new user with the same email", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var fakeUsersRepository, fakeHashProvider, createUser;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    fakeUsersRepository = new FakeUsersRepository_1.default();
-                    fakeHashProvider = new fakeHashProvider_1.default();
-                    createUser = new CreateUserService_1.default(fakeUsersRepository, fakeHashProvider);
-                    return [4 /*yield*/, createUser.execute({
-                            name: "John Doe",
-                            email: "abc@abc.com",
-                            password: "123123",
-                        })];
+                case 0: return [4 /*yield*/, createUser.execute({
+                        name: "John Doe",
+                        email: "abc@abc.com",
+                        password: "123123",
+                    })];
                 case 1:
                     _a.sent();
                     return [4 /*yield*/, expect(createUser.execute({

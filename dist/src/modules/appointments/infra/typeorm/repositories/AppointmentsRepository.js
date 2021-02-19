@@ -60,14 +60,65 @@ var AppointmentsRepository = /** @class */ (function () {
             });
         });
     };
+    AppointmentsRepository.prototype.findAllInMonthFromProvider = function (_a) {
+        var provider_id = _a.provider_id, month = _a.month, year = _a.year;
+        return __awaiter(this, void 0, void 0, function () {
+            var parsedMonth, appointments;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        parsedMonth = String(month).padStart(2, "0");
+                        return [4 /*yield*/, this.ormRepository.find({
+                                where: {
+                                    provider_id: provider_id,
+                                    date: typeorm_1.Raw(function (dateFieldName) {
+                                        return "to_char(" + dateFieldName + ", 'MM-YYYY') = '" + parsedMonth + "-" + year + "'";
+                                    }),
+                                },
+                            })];
+                    case 1:
+                        appointments = _b.sent();
+                        return [2 /*return*/, appointments];
+                }
+            });
+        });
+    };
+    AppointmentsRepository.prototype.findAllInDayFromProvider = function (_a) {
+        var provider_id = _a.provider_id, day = _a.day, month = _a.month, year = _a.year;
+        return __awaiter(this, void 0, void 0, function () {
+            var parsedDay, parsedMonth, appointments;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        parsedDay = String(day).padStart(2, "0");
+                        parsedMonth = String(month).padStart(2, "0");
+                        return [4 /*yield*/, this.ormRepository.find({
+                                where: {
+                                    provider_id: provider_id,
+                                    date: typeorm_1.Raw(function (dateFieldName) {
+                                        return "to_char(" + dateFieldName + ", 'DD-MM-YYYY') = '" + parsedDay + "-" + parsedMonth + "-" + year + "'";
+                                    }),
+                                },
+                            })];
+                    case 1:
+                        appointments = _b.sent();
+                        return [2 /*return*/, appointments];
+                }
+            });
+        });
+    };
     AppointmentsRepository.prototype.create = function (_a) {
-        var provider_id = _a.provider_id, date = _a.date;
+        var provider_id = _a.provider_id, user_id = _a.user_id, date = _a.date;
         return __awaiter(this, void 0, void 0, function () {
             var appointment;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        appointment = this.ormRepository.create({ provider_id: provider_id, date: date });
+                        appointment = this.ormRepository.create({
+                            provider_id: provider_id,
+                            user_id: user_id,
+                            date: date,
+                        });
                         return [4 /*yield*/, this.ormRepository.save(appointment)];
                     case 1:
                         _b.sent();

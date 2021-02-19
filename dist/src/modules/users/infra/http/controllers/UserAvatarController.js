@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var tsyringe_1 = require("tsyringe");
+var class_transformer_1 = require("class-transformer");
 var UpdateUserAvatarService_1 = __importDefault(require("@modules/users/services/UpdateUserAvatarService"));
 var UserAvatarControllers = /** @class */ (function () {
     function UserAvatarControllers() {
@@ -57,8 +58,7 @@ var UserAvatarControllers = /** @class */ (function () {
                             })];
                     case 1:
                         user = _a.sent();
-                        delete user.password;
-                        return [2 /*return*/, response.json(user)];
+                        return [2 /*return*/, response.json(class_transformer_1.classToClass(user))];
                 }
             });
         });

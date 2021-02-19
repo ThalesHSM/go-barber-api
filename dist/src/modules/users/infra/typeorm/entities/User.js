@@ -10,9 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
+var class_transformer_1 = require("class-transformer");
 var User = /** @class */ (function () {
     function User() {
     }
+    User.prototype.getAvatarUrl = function () {
+        return this.avatar ? "http://localhost:3333/" + this.avatar : null;
+    };
     __decorate([
         typeorm_1.PrimaryGeneratedColumn("uuid"),
         __metadata("design:type", String)
@@ -27,6 +31,7 @@ var User = /** @class */ (function () {
     ], User.prototype, "email", void 0);
     __decorate([
         typeorm_1.Column(),
+        class_transformer_1.Exclude(),
         __metadata("design:type", String)
     ], User.prototype, "password", void 0);
     __decorate([
@@ -41,6 +46,12 @@ var User = /** @class */ (function () {
         typeorm_1.UpdateDateColumn(),
         __metadata("design:type", Date)
     ], User.prototype, "updated_at", void 0);
+    __decorate([
+        class_transformer_1.Expose({ name: "avatar_url" }),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", Object)
+    ], User.prototype, "getAvatarUrl", null);
     User = __decorate([
         typeorm_1.Entity("users")
     ], User);

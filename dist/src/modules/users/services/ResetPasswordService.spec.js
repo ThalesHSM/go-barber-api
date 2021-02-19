@@ -134,8 +134,8 @@ describe("ResetPasswordService", function () {
                         return customDate.setHours(customDate.getHours() + 3);
                     });
                     return [4 /*yield*/, expect(resetPassword.execute({
+                            password: "123456",
                             token: token,
-                            password: "123123",
                         })).rejects.toBeInstanceOf(AppError_1.default)];
                 case 3:
                     _a.sent();

@@ -43,20 +43,24 @@ var AppError_1 = __importDefault(require("@shared/errors/AppError"));
 var FakeUsersRepository_1 = __importDefault(require("../repositories/fakes/FakeUsersRepository"));
 var FakeStorageProvider_1 = __importDefault(require("@shared/container/providers/StorageProvider/fakes/FakeStorageProvider"));
 var UpdateUserAvatarService_1 = __importDefault(require("@modules/users/services/UpdateUserAvatarService"));
+var fakeUsersRepository;
+var fakeStorageProvider;
+var updateUserAvatarService;
 describe("UpdateUserAvatar", function () {
+    beforeEach(function () {
+        fakeUsersRepository = new FakeUsersRepository_1.default();
+        fakeStorageProvider = new FakeStorageProvider_1.default();
+        updateUserAvatarService = new UpdateUserAvatarService_1.default(fakeUsersRepository, fakeStorageProvider);
+    });
     it("Should be able to update avatar", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var fakeUsersRepository, fakeStorageProvider, updateUserAvatarService, user;
+        var user;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    fakeUsersRepository = new FakeUsersRepository_1.default();
-                    fakeStorageProvider = new FakeStorageProvider_1.default();
-                    updateUserAvatarService = new UpdateUserAvatarService_1.default(fakeUsersRepository, fakeStorageProvider);
-                    return [4 /*yield*/, fakeUsersRepository.create({
-                            name: "John Doe",
-                            email: "abc@abc.com",
-                            password: "123123",
-                        })];
+                case 0: return [4 /*yield*/, fakeUsersRepository.create({
+                        name: "John Doe",
+                        email: "abc@abc.com",
+                        password: "123123",
+                    })];
                 case 1:
                     user = _a.sent();
                     return [4 /*yield*/, updateUserAvatarService.execute({
@@ -71,17 +75,12 @@ describe("UpdateUserAvatar", function () {
         });
     }); });
     it("Should not be able to update avatar from non existing user", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var fakeUsersRepository, fakeStorageProvider, updateUserAvatarService;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    fakeUsersRepository = new FakeUsersRepository_1.default();
-                    fakeStorageProvider = new FakeStorageProvider_1.default();
-                    updateUserAvatarService = new UpdateUserAvatarService_1.default(fakeUsersRepository, fakeStorageProvider);
-                    return [4 /*yield*/, expect(updateUserAvatarService.execute({
-                            avatarFilename: "avatar.jpg",
-                            user_id: "non existing user",
-                        })).rejects.toBeInstanceOf(AppError_1.default)];
+                case 0: return [4 /*yield*/, expect(updateUserAvatarService.execute({
+                        avatarFilename: "avatar.jpg",
+                        user_id: "non existing user",
+                    })).rejects.toBeInstanceOf(AppError_1.default)];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
@@ -89,14 +88,11 @@ describe("UpdateUserAvatar", function () {
         });
     }); });
     it("Should delete old avatar when updating new one", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var fakeUsersRepository, fakeStorageProvider, deleteFile, updateUserAvatarService, user;
+        var deleteFile, user;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    fakeUsersRepository = new FakeUsersRepository_1.default();
-                    fakeStorageProvider = new FakeStorageProvider_1.default();
                     deleteFile = jest.spyOn(fakeStorageProvider, "deleteFile");
-                    updateUserAvatarService = new UpdateUserAvatarService_1.default(fakeUsersRepository, fakeStorageProvider);
                     return [4 /*yield*/, fakeUsersRepository.create({
                             name: "John Doe",
                             email: "abc@abc.com",

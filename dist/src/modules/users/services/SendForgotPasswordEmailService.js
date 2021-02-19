@@ -52,6 +52,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var tsyringe_1 = require("tsyringe");
+var path_1 = __importDefault(require("path"));
 var AppError_1 = __importDefault(require("@shared/errors/AppError"));
 var SendForgotPasswordEmailService = /** @class */ (function () {
     function SendForgotPasswordEmailService(usersRepository, mailProvider, userTokensRepository) {
@@ -62,19 +63,33 @@ var SendForgotPasswordEmailService = /** @class */ (function () {
     SendForgotPasswordEmailService.prototype.execute = function (_a) {
         var email = _a.email;
         return __awaiter(this, void 0, void 0, function () {
-            var checkUserExists, token;
+            var user, token, forgotPasswordTemplate;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.usersRepository.findByEmail(email)];
                     case 1:
-                        checkUserExists = _b.sent();
-                        if (!checkUserExists) {
+                        user = _b.sent();
+                        if (!user) {
                             throw new AppError_1.default("User does not exists.");
                         }
-                        return [4 /*yield*/, this.userTokensRepository.generate(checkUserExists.id)];
+                        return [4 /*yield*/, this.userTokensRepository.generate(user.id)];
                     case 2:
                         token = (_b.sent()).token;
-                        return [4 /*yield*/, this.mailProvider.sendMail(email, "Pedido de recupera\u00E7\u00E3o de senha recebido: " + token)];
+                        forgotPasswordTemplate = path_1.default.resolve(__dirname, "..", "views", "forgot_password.hbs");
+                        return [4 /*yield*/, this.mailProvider.sendMail({
+                                to: {
+                                    name: user.name,
+                                    email: user.email,
+                                },
+                                subject: "[GoBarber] Recuperação de senha",
+                                templateData: {
+                                    file: forgotPasswordTemplate,
+                                    variables: {
+                                        name: user.name,
+                                        link: "http://localhost:3000/reset_password?token=" + token,
+                                    },
+                                },
+                            })];
                     case 3:
                         _b.sent();
                         return [2 /*return*/];

@@ -57,8 +57,37 @@ var AppointmentsRepository = /** @class */ (function () {
             });
         });
     };
+    AppointmentsRepository.prototype.findAllInMonthFromProvider = function (_a) {
+        var provider_id = _a.provider_id, month = _a.month, year = _a.year;
+        return __awaiter(this, void 0, void 0, function () {
+            var appointments;
+            return __generator(this, function (_b) {
+                appointments = this.appointments.filter(function (appointment) {
+                    return (appointment.provider_id === provider_id &&
+                        date_fns_1.getMonth(appointment.date) + 1 === month &&
+                        date_fns_1.getYear(appointment.date) === year);
+                });
+                return [2 /*return*/, appointments];
+            });
+        });
+    };
+    AppointmentsRepository.prototype.findAllInDayFromProvider = function (_a) {
+        var provider_id = _a.provider_id, day = _a.day, month = _a.month, year = _a.year;
+        return __awaiter(this, void 0, void 0, function () {
+            var appointments;
+            return __generator(this, function (_b) {
+                appointments = this.appointments.filter(function (appointment) {
+                    return (appointment.provider_id === provider_id &&
+                        date_fns_1.getDate(appointment.date) === day &&
+                        date_fns_1.getMonth(appointment.date) + 1 === month &&
+                        date_fns_1.getYear(appointment.date) === year);
+                });
+                return [2 /*return*/, appointments];
+            });
+        });
+    };
     AppointmentsRepository.prototype.create = function (_a) {
-        var provider_id = _a.provider_id, date = _a.date;
+        var provider_id = _a.provider_id, user_id = _a.user_id, date = _a.date;
         return __awaiter(this, void 0, void 0, function () {
             var appointment;
             return __generator(this, function (_b) {
@@ -67,6 +96,7 @@ var AppointmentsRepository = /** @class */ (function () {
                     id: uuidv4_1.uuid(),
                     date: date,
                     provider_id: provider_id,
+                    user_id: user_id,
                 });
                 this.appointments.push(appointment);
                 return [2 /*return*/, appointment];

@@ -81,7 +81,7 @@ var ResetPasswordService = /** @class */ (function () {
                         tokenCreatedAt = userToken.created_at;
                         compareDate = date_fns_1.addHours(tokenCreatedAt, 2);
                         if (date_fns_1.isAfter(Date.now(), compareDate)) {
-                            throw new Error("Token Expired");
+                            throw new AppError_1.default("Token Expired");
                         }
                         _b = user;
                         return [4 /*yield*/, this.hashProvider.generateHash(password)];

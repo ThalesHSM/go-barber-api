@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var tsyringe_1 = require("tsyringe");
+var class_transformer_1 = require("class-transformer");
 var AuthenticateUserService_1 = __importDefault(require("@modules/users/services/AuthenticateUserService"));
 var SessionsControllers = /** @class */ (function () {
     function SessionsControllers() {
@@ -58,8 +59,7 @@ var SessionsControllers = /** @class */ (function () {
                             })];
                     case 1:
                         _b = _c.sent(), user = _b.user, token = _b.token;
-                        delete user.password;
-                        return [2 /*return*/, response.json({ user: user, token: token })];
+                        return [2 /*return*/, response.json({ user: class_transformer_1.classToClass(user), token: token })];
                 }
             });
         });
