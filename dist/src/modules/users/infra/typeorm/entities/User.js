@@ -8,14 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
+var upload_1 = __importDefault(require("@config/upload"));
 var class_transformer_1 = require("class-transformer");
 var User = /** @class */ (function () {
     function User() {
     }
     User.prototype.getAvatarUrl = function () {
-        return this.avatar ? "http://localhost:3333/" + this.avatar : null;
+        if (!this.avatar) {
+            return null;
+        }
+        switch (upload_1.default.driver) {
+            case "disk":
+                return process.env.APP_API_URL + "/files/" + this.avatar;
+            case "s3":
+                return "https://" + upload_1.default.config.aws.bucket + ".s3.amazonaws.com/" + this.avatar;
+            default:
+                return null;
+        }
     };
     __decorate([
         typeorm_1.PrimaryGeneratedColumn("uuid"),

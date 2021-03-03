@@ -12,6 +12,6 @@ const providers = {
 };
 
 container.registerSingleton<IStorageProvider>(
-  "MailProvider",
+  "StorageProvider",
   providers[uploadConfig.driver]
 );

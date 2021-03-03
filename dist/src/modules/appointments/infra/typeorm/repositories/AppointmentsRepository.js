@@ -40,10 +40,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var appointment_1 = __importDefault(require("../entities/appointment"));
+var Appointment_1 = __importDefault(require("../entities/Appointment"));
 var AppointmentsRepository = /** @class */ (function () {
     function AppointmentsRepository() {
-        this.ormRepository = typeorm_1.getRepository(appointment_1.default);
+        this.ormRepository = typeorm_1.getRepository(Appointment_1.default);
     }
     AppointmentsRepository.prototype.findByDate = function (date) {
         return __awaiter(this, void 0, void 0, function () {

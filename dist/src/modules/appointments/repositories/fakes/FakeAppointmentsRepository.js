@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var uuidv4_1 = require("uuidv4");
 var date_fns_1 = require("date-fns");
-var appointment_1 = __importDefault(require("../../infra/typeorm/entities/appointment"));
+var Appointment_1 = __importDefault(require("../../infra/typeorm/entities/Appointment"));
 var AppointmentsRepository = /** @class */ (function () {
     function AppointmentsRepository() {
         this.appointments = [];
@@ -91,7 +91,7 @@ var AppointmentsRepository = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var appointment;
             return __generator(this, function (_b) {
-                appointment = new appointment_1.default();
+                appointment = new Appointment_1.default();
                 Object.assign(appointment, {
                     id: uuidv4_1.uuid(),
                     date: date,

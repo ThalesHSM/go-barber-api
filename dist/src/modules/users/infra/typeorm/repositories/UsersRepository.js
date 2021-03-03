@@ -63,7 +63,7 @@ var UsersRepository = /** @class */ (function () {
             var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.ormRepository.findOne({ where: email })];
+                    case 0: return [4 /*yield*/, this.ormRepository.findOne({ where: { email: email } })];
                     case 1:
                         user = _a.sent();
                         return [2 /*return*/, user];

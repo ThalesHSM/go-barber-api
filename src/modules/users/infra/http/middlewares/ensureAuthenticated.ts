@@ -5,7 +5,7 @@ import authConfig from "@config/auth";
 
 import AppError from "@shared/errors/AppError";
 
-interface tokenPayload {
+interface ITokenPayload {
   iat: number;
   exp: number;
   sub: string;
@@ -22,20 +22,20 @@ export default function ensureAuthenticated(
     throw new AppError("JWT token is missing.", 401);
   }
 
-  const [, , token] = authHeader.split(" ");
+  const [, token] = authHeader.split(" ");
 
   try {
     const decoded = verify(token, authConfig.jwt.secret);
 
-    const { sub } = decoded as tokenPayload;
+    const { sub } = decoded as ITokenPayload;
 
     request.user = {
       id: sub,
     };
 
-    console.log(decoded);
     return next();
-  } catch {
+  } catch (error) {
+    console.log(error);
     throw new AppError("Invalid JWT token.", 401);
   }
 }

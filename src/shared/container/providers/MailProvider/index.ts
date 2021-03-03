@@ -2,7 +2,7 @@ import { container } from "tsyringe";
 import mailConfig from "@config/mail";
 
 import EtherealMailProvider from "./implementations/EtherealMailProvider";
-import SesMailProvider from "./implementations/SesMailProvider";
+import SesMailProvider from "./implementations/SESMailProvider";
 
 import IMailProvider from "./models/IMailProvider";
 
